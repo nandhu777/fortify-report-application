@@ -1,0 +1,40 @@
+
+server:
+  port: 8082
+
+spring:
+  thymeleaf:
+    cache: false
+  application:
+      name: fortify-report-service
+  mail:
+    host: smtp.yourcompany.com
+    port: 587
+    username: ${MAIL_USER}
+    password: ${MAIL_PASS}
+    properties:
+      mail.smtp.auth: true
+      mail.smtp.starttls.enable: true
+
+mail:
+  from: fortify-bot@company.com
+  defaultTo: you@company.com
+
+fortify:
+  provider: ssc-export
+  ssc:
+    baseUrl: https://fortifyssc.int.corp.sun/ssc
+    token: ${SSC_TOKEN:}
+    username: "u268128"
+    password: "Nash@268128$"
+    authHeaderPrefix: FortifyToken
+    export:
+      templateName: Security Auditor View
+      format: PDF
+      pollIntervalMillis: 1500
+      pollTimeoutSeconds: 120
+
+  # <== this must be a sibling of 'ssc', not nested under it
+  apps:
+    AMP-Home: "1502"
+    DDCModule_ST: "1625"

@@ -1,0 +1,16 @@
+<!doctype html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <title>Report sent</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@picocss/pico@2/css/pico.min.css">
+</head>
+<body>
+<main class="container">
+    <h2>✅ Sent!</h2>
+    <p>Latest report for <strong th:text="${app}"></strong> was emailed to <strong th:text="${to}"></strong>.</p>
+    <p>Attachment: <code th:text="${file}"></code></p>
+    <a href="/">Send another</a>
+</main>
+</body>
+</html>

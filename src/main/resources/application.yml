@@ -7,34 +7,24 @@ spring:
     cache: false
   application:
       name: fortify-report-service
-  mail:
-    host: smtp.yourcompany.com
-    port: 587
-    username: ${MAIL_USER}
-    password: ${MAIL_PASS}
-    properties:
-      mail.smtp.auth: true
-      mail.smtp.starttls.enable: true
 
-mail:
-  from: fortify-bot@company.com
-  defaultTo: you@company.com
+
+
+logging:
+  level:
+    root: INFO
+    com.fortify: DEBUG
+    org.springframework.web.client.RestClient: INFO
 
 fortify:
-  provider: ssc-export
   ssc:
-    baseUrl: https://fortifyssc.int.corp.sun/ssc
-    token: ${SSC_TOKEN:}
-    username: "u268128"
-    password: "Nash@268128$"
+    baseUrl: https://fortifyssc.int.corp.sun/ssc/api/v1
     authHeaderPrefix: FortifyToken
-    export:
-      templateName: Security Auditor View
-      format: PDF
-      pollIntervalMillis: 1500
-      pollTimeoutSeconds: 120
+    token: ZTM3MTljNTItMzI3NCO0NDY3OUtLIyMTODI2YjNTk0YWZk
 
-  # <== this must be a sibling of 'ssc', not nested under it
+
   apps:
+    Broker-Notifications-Service: "1753"
     AMP-Home: "1502"
-    DDCModule_ST: "1625"
+    DigitalNZ-Motor-New: "1680"
+    DigitalNZ-AAI-PSS: "1709"

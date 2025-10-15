@@ -7,30 +7,63 @@
 </head>
 <body>
 <main class="container">
-    <h2>Send latest Fortify report</h2>
+    <h2>Latest Fortify report</h2>
 
-    <form th:action="@{/send}" method="post">
-
-        <select name="applicationName" required>
+    <form id="fortifyForm" method="get" onsubmit="submitForm(event)">
+        <label for="application">Application</label>
+        <select id="application" name="projectVersionId" required>
             <option value="" disabled selected>Select application</option>
-            <option th:each="app : ${apps}"
-                    th:value="${app}"
-                    th:text="${app}"></option>
+            <option th:each="entry : ${apps.entrySet()}"
+                    th:value="${entry.value}"
+                    th:text="${entry.key}">
+            </option>
         </select>
-
-
 
         <br/><br/>
 
         <label for="recipient">Recipient (optional)</label>
-        <input type="email" id="recipient" name="recipient" placeholder="you@company.com"/>
+        <input type="email" id="recipient" name="recipient" placeholder="you@suncorp.com.nz"/>
 
         <br/><br/>
-        <button type="submit">Send</button>
+        <button type="submit">Fetch</button>
     </form>
 
-
     <p th:if="${error}" style="color:#b00020" th:text="${error}"></p>
+
+    <!-- where we print the server response -->
+    <pre id="resultBox" style="white-space:pre-wrap;margin-top:1rem;"></pre>
 </main>
+
+<!-- prevent Thymeleaf from interpreting ${...} inside JS template strings -->
+<script th:inline="none">
+    async function submitForm(e) {
+      e.preventDefault();
+
+      const appId = document.getElementById("application").value;
+      const resultBox = document.getElementById("resultBox");
+
+      if (!appId) {
+        resultBox.textContent = "Please select an application first.";
+        return;
+      }
+
+      resultBox.textContent = "Fetching data from Fortify API...";
+
+      try {
+        // Matches @GetMapping("/issues/{projectVersionId}")
+        const url = `/fortify/issues/${encodeURIComponent(appId)}`;
+        const response = await fetch(url, { method: "GET" });
+
+        if (!response.ok) {
+          throw new Error (`Server returned ${response.status}`);
+        }
+
+        const data = await response.text(); // endpoint returns String
+        resultBox.textContent = data;
+      } catch (error) {
+        resultBox.textContent = "Error: " + error.message;
+      }
+    }
+</script>
 </body>
 </html>
